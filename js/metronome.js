@@ -72,7 +72,9 @@ class Metronome {
 
     this._currentBeat   = 0;
     this._currentSubdiv = 0;
-    this._nextBeatTime  = ctx.currentTime;
+    // Small offset ensures the first beat is always in the future when the
+    // scheduler fires for the first time (~25 ms from now).
+    this._nextBeatTime  = ctx.currentTime + 0.05;
     this._intervalId    = setInterval(() => this._schedule(), this.LOOKAHEAD_INTERVAL);
   }
 
