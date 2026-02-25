@@ -1,0 +1,361 @@
+/* ─── Reset & base ───────────────────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg:          #0f0f11;
+  --surface:     #1c1c21;
+  --border:      #2e2e38;
+  --accent:      #7c6af7;
+  --accent-beat: #f7c06a;
+  --text:        #e8e8f0;
+  --text-muted:  #7a7a90;
+  --btn-radius:  10px;
+  --transition:  0.15s ease;
+}
+
+[data-theme="light"] {
+  --bg:         #f4f4f8;
+  --surface:    #ffffff;
+  --border:     #d0d0dc;
+  --accent:     #5b4ee0;
+  --accent-beat:#d4900a;
+  --text:       #18181f;
+  --text-muted: #6b6b80;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* ─── Layout ─────────────────────────────────────────────────────────────── */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 40px 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  width: min(420px, 92vw);
+}
+
+/* ─── Beat indicator ─────────────────────────────────────────────────────── */
+
+.beat-indicator {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background var(--transition);
+}
+
+@keyframes pulse {
+  0%   { transform: scale(1.25); background: var(--accent); box-shadow: 0 0 24px var(--accent); }
+  100% { transform: scale(1);    background: var(--border);  box-shadow: none; }
+}
+
+@keyframes pulse-accent {
+  0%   { transform: scale(1.35); background: var(--accent-beat); box-shadow: 0 0 32px var(--accent-beat); }
+  100% { transform: scale(1);    background: var(--border);       box-shadow: none; }
+}
+
+.beat-indicator.pulse {
+  animation: pulse 0.18s ease-out forwards;
+}
+
+.beat-indicator.pulse-accent {
+  animation: pulse-accent 0.18s ease-out forwards;
+}
+
+/* ─── BPM display ────────────────────────────────────────────────────────── */
+
+.bpm-display {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.bpm-value {
+  font-size: 5rem;
+  font-weight: 700;
+  letter-spacing: -2px;
+  min-width: 3ch;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  line-height: 1;
+}
+
+.bpm-value:hover {
+  color: var(--accent);
+}
+
+.bpm-edit-input {
+  font-size: 5rem;
+  font-weight: 700;
+  letter-spacing: -2px;
+  width: 3.5ch;
+  text-align: center;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--accent);
+  color: var(--text);
+  outline: none;
+  line-height: 1;
+}
+
+.bpm-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.bpm-btn:hover {
+  background: var(--border);
+  border-color: var(--accent);
+}
+
+.bpm-label {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-top: -18px;
+}
+
+/* ─── BPM slider ─────────────────────────────────────────────────────────── */
+
+.bpm-slider {
+  width: 100%;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* ─── Beat counter ───────────────────────────────────────────────────────── */
+
+.beat-counter {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  display: flex;
+  gap: 4px;
+  align-items: baseline;
+}
+
+#beat-display {
+  color: var(--text);
+  min-width: 1ch;
+  text-align: right;
+}
+
+.beat-separator {
+  color: var(--border);
+}
+
+/* ─── Row controls (time sig, volume) ────────────────────────────────────── */
+
+.time-sig-row,
+.volume-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.time-sig-row label,
+.volume-row label {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.time-sig-select {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--btn-radius);
+  color: var(--text);
+  padding: 6px 10px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  outline: none;
+}
+
+.time-sig-select:focus {
+  border-color: var(--accent);
+}
+
+.volume-slider {
+  flex: 1;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* ─── Buttons ────────────────────────────────────────────────────────────── */
+
+.controls {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.btn-primary,
+.btn-secondary {
+  flex: 1;
+  padding: 14px 0;
+  border: none;
+  border-radius: var(--btn-radius);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn-primary.running {
+  background: #e05c5c;
+}
+
+.btn-primary:hover  { opacity: 0.88; }
+.btn-secondary {
+  background: var(--border);
+  color: var(--text);
+}
+
+.btn-secondary:hover { opacity: 0.75; }
+
+.btn-primary:active,
+.btn-secondary:active {
+  transform: scale(0.97);
+}
+
+/* ─── Theme toggle ───────────────────────────────────────────────────────── */
+
+.theme-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition);
+  z-index: 10;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  background: var(--border);
+}
+
+/* ─── Subdivisions & Presets rows ────────────────────────────────────────── */
+
+.subdivision-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.subdivision-row label {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.presets-row {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.presets-row > label {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.presets-list {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.preset-btn {
+  flex: 1;
+  min-width: 60px;
+  padding: 8px 4px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--btn-radius);
+  color: var(--text);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  line-height: 1.4;
+  transition: border-color var(--transition), background var(--transition);
+}
+
+.preset-btn small {
+  display: block;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.preset-btn:hover {
+  border-color: var(--accent);
+  background: var(--surface);
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+  .bpm-value {
+    font-size: 4rem;
+  }
+
+  .container {
+    padding: 28px 20px;
+    gap: 18px;
+  }
+}

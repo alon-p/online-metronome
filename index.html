@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Metronome</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">☀</button>
+
+  <main class="container">
+    <div id="beat-indicator" class="beat-indicator"></div>
+
+    <div class="bpm-display">
+      <button id="bpm-down" class="bpm-btn" aria-label="Decrease BPM">−</button>
+      <span id="bpm-value" class="bpm-value">120</span>
+      <button id="bpm-up" class="bpm-btn" aria-label="Increase BPM">+</button>
+    </div>
+
+    <label class="bpm-label">BPM</label>
+
+    <input
+      id="bpm-slider"
+      type="range"
+      min="20"
+      max="300"
+      value="120"
+      class="bpm-slider"
+      aria-label="BPM slider"
+    />
+
+    <div class="beat-counter">
+      <span id="beat-display">1</span>
+      <span class="beat-separator">/</span>
+      <span id="beats-per-measure">4</span>
+    </div>
+
+    <div class="time-sig-row">
+      <label for="time-sig">Time Signature</label>
+      <select id="time-sig" class="time-sig-select">
+        <option value="2">2/4</option>
+        <option value="3">3/4</option>
+        <option value="4" selected>4/4</option>
+        <option value="6">6/8</option>
+      </select>
+    </div>
+
+    <div class="volume-row">
+      <label for="volume">Volume</label>
+      <input id="volume" type="range" min="0" max="1" step="0.01" value="0.8" class="volume-slider" aria-label="Volume" />
+    </div>
+
+    <div class="subdivision-row">
+      <label for="subdivision">Subdivisions</label>
+      <select id="subdivision" class="time-sig-select">
+        <option value="1" selected>Quarter notes</option>
+        <option value="2">Eighth notes</option>
+        <option value="3">Triplets</option>
+        <option value="4">Sixteenth notes</option>
+      </select>
+    </div>
+
+    <div class="presets-row">
+      <label>Preset</label>
+      <div class="presets-list" id="presets-list">
+        <button class="preset-btn" data-bpm="60">Largo<br/><small>60</small></button>
+        <button class="preset-btn" data-bpm="76">Andante<br/><small>76</small></button>
+        <button class="preset-btn" data-bpm="108">Moderato<br/><small>108</small></button>
+        <button class="preset-btn" data-bpm="132">Allegro<br/><small>132</small></button>
+        <button class="preset-btn" data-bpm="176">Presto<br/><small>176</small></button>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="start-stop" class="btn-primary">Start</button>
+      <button id="tap-tempo" class="btn-secondary">Tap Tempo</button>
+    </div>
+  </main>
+
+  <script src="js/metronome.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
