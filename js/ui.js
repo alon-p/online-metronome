@@ -237,4 +237,13 @@ function initUI(metronome) {
   // ─── Beat callback ─────────────────────────────────────────────────────────
 
   metronome.onBeat = flashBeat;
+
+  // ─── iOS audio unlock ──────────────────────────────────────────────────────
+  // iOS Safari suspends AudioContext until a user gesture. Pre-warm it on the
+  // first touch so it's ready when Start is pressed.
+  document.addEventListener('touchstart', () => {
+    metronome._ensureAudioContext();
+    const ctx = metronome._audioCtx;
+    if (ctx.state === 'suspended') ctx.resume();
+  }, { once: true });
 }
