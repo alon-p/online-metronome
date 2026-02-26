@@ -28,10 +28,6 @@
   --text-muted: #6b6b80;
 }
 
-html, body {
-  height: 100%;
-}
-
 body {
   background: var(--bg);
   color: var(--text);
@@ -40,7 +36,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  /*min-height: 100vh;*/
 }
 
 /* ─── Layout ─────────────────────────────────────────────────────────────── */
@@ -55,6 +51,7 @@ body {
   border: 1px solid var(--border);
   border-radius: 20px;
   width: min(420px, 92vw);
+  margin-top: 5rem;
 }
 
 /* ─── Beat indicator ─────────────────────────────────────────────────────── */
@@ -380,5 +377,19 @@ body {
   .container {
     padding: 28px 20px;
     gap: 18px;
+  }
+}
+
+@media (max-height: 700px) {
+  main.container {
+    margin-top: 5%;
+  }
+
+  .presets-row {
+    display: none;
+  }
+
+  .theme-toggle {
+    display: none;
   }
 }
