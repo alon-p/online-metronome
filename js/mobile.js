@@ -38,14 +38,34 @@ function initMobile(metronome) {
   // progress", preventing the WebAudio AudioContext from being suspended when
   // the screen locks manually. Must be started inside a user gesture.
   //
-  // Minimal 1-second silent WAV (44100 Hz, mono, 16-bit PCM), base64-encoded.
+  // Build the WAV buffer programmatically to guarantee a valid file.
 
-  const SILENT_WAV =
-    'data:audio/wav;base64,' +
-    'UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=';
+  function buildSilentWavUrl() {
+    // 46-byte WAV: RIFF/WAVE/fmt /data headers + 1 silent 16-bit PCM sample
+    const buf  = new ArrayBuffer(46);
+    const view = new DataView(buf);
+    // RIFF chunk
+    view.setUint32(0,  0x52494646, false); // "RIFF"
+    view.setUint32(4,  38,         true);  // chunk size = file size - 8
+    view.setUint32(8,  0x57415645, false); // "WAVE"
+    // fmt sub-chunk
+    view.setUint32(12, 0x666d7420, false); // "fmt "
+    view.setUint32(16, 16,         true);  // sub-chunk size
+    view.setUint16(20, 1,          true);  // PCM
+    view.setUint16(22, 1,          true);  // mono
+    view.setUint32(24, 44100,      true);  // sample rate
+    view.setUint32(28, 88200,      true);  // byte rate (44100 * 1 * 2)
+    view.setUint16(32, 2,          true);  // block align
+    view.setUint16(34, 16,         true);  // bits per sample
+    // data sub-chunk
+    view.setUint32(36, 0x64617461, false); // "data"
+    view.setUint32(40, 2,          true);  // data size (1 sample = 2 bytes)
+    view.setInt16(44,  0,          true);  // silent sample
+    return URL.createObjectURL(new Blob([buf], { type: 'audio/wav' }));
+  }
 
   const silentAudio = document.createElement('audio');
-  silentAudio.src = SILENT_WAV;
+  silentAudio.src = buildSilentWavUrl();
   silentAudio.loop = true;
   silentAudio.volume = 0;
   silentAudio.setAttribute('playsinline', '');
