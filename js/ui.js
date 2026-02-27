@@ -48,7 +48,7 @@ function initUI(metronome) {
 
   // ─── Start / Stop ──────────────────────────────────────────────────────────
 
-  startStopBtn.addEventListener('click', () => {
+  startStopBtn.addEventListener('click', async () => {
     if (metronome.isRunning) {
       metronome.stop();
       startStopBtn.textContent = 'Start';
@@ -56,11 +56,11 @@ function initUI(metronome) {
       beatDisplay.textContent = '1';
       beatIndicator.classList.remove('pulse', 'pulse-accent');
     } else {
-      // Ensure AudioContext exists and is resumed within the user gesture.
-      // resume() is async but start() schedules 100 ms ahead, giving enough
-      // time for the context to become running before the first beat plays.
+      // Ensure AudioContext exists and await resume() so the context is
+      // confirmed running before start() schedules the first beat.
+      // This prevents the "Start doesn't work after screen lock" bug on mobile.
       metronome._ensureAudioContext();
-      metronome._audioCtx.resume();
+      await metronome._audioCtx.resume();
       metronome.start();
       startStopBtn.textContent = 'Stop';
       startStopBtn.classList.add('running');

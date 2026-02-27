@@ -34,6 +34,10 @@ class Metronome {
 
     // UI hook — called with the 0-based beat index just before it sounds
     this.onBeat = null;
+
+    // Lifecycle hooks — called after start() / stop()
+    this.onStart = null;
+    this.onStop  = null;
   }
 
   // ─── Public API ───────────────────────────────────────────────────────────
@@ -78,12 +82,14 @@ class Metronome {
     this._nextBeatTime  = ctx.currentTime + (ctx.baseLatency || 0.01);
     this._schedule(); // schedule immediately so the first beat is never missed
     this._intervalId    = setInterval(() => this._schedule(), this.LOOKAHEAD_INTERVAL);
+    if (this.onStart) this.onStart();
   }
 
   stop() {
     if (!this.isRunning) return;
     clearInterval(this._intervalId);
     this._intervalId = null;
+    if (this.onStop) this.onStop();
   }
 
   // ─── Internal ─────────────────────────────────────────────────────────────
